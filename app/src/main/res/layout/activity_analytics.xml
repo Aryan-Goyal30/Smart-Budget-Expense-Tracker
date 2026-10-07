@@ -1,99 +1,752 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurfaceContainer">
+    android:fillViewport="true"
+    android:background="?attr/colorSurface">
 
-    <TextView
-        android:id="@+id/tvAnalyticsTitle"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="24dp"
-        android:text="Spending Analytics"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:textColor="?attr/colorOnSurface"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="32dp">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardChart"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="0dp"
-        app:strokeWidth="1dp"
-        app:strokeColor="?attr/colorOutlineVariant"
-        app:cardBackgroundColor="?attr/colorSurface"
-        app:layout_constraintTop_toBottomOf="@id/tvAnalyticsTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        <!-- ================= Header ================= -->
+        <TextView
+            android:id="@+id/tvAnalyticsTitle"
+            style="@style/SmartBudget.ScreenTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Analytics" />
 
+        <TextView
+            android:id="@+id/tvAnalyticsSubtitle"
+            style="@style/SmartBudget.Subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            tools:text="October 2026" />
+
+        <!-- ================= 1. Overview (all time) ================= -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:layout_marginTop="24dp"
+            android:gravity="bottom"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tvAnalyticsSummary"
+                style="@style/SmartBudget.SectionTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Overview" />
+
+            <TextView
+                style="@style/SmartBudget.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="All time" />
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardFinancialSummary"
+            style="@style/SmartBudget.Panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Category-wise Spending"
-                android:textColor="?attr/colorOnSurfaceVariant"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/SmartBudget.Label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Income" />
+
+                        <TextView
+                            android:id="@+id/tvSummaryIncome"
+                            style="@style/SmartBudget.Value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:textColor="@color/color_income"
+                            tools:text="₹30,000.00" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/SmartBudget.Label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Expenses" />
+
+                        <TextView
+                            android:id="@+id/tvSummaryExpenses"
+                            style="@style/SmartBudget.Value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:textColor="@color/color_expense"
+                            tools:text="₹18,790.00" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvSummarySavingsLabel"
+                            style="@style/SmartBudget.Label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Savings" />
+
+                        <TextView
+                            android:id="@+id/tvSummarySavings"
+                            style="@style/SmartBudget.Value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            tools:text="₹11,210.00" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/SmartBudget.Label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Savings rate" />
+
+                        <TextView
+                            android:id="@+id/tvSummarySavingsRate"
+                            style="@style/SmartBudget.Value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            tools:text="37.4%" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Shown only when there is no income -->
+                <TextView
+                    android:id="@+id/tvSavingsRateNote"
+                    style="@style/SmartBudget.Label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Add income to calculate your savings rate."
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ================= 2. How am I doing? ================= -->
+        <TextView
+            style="@style/SmartBudget.SectionTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="How am I doing?" />
+
+        <!-- Each insight is a softly tinted row; the tint is set in code (good / warning / neutral) -->
+        <LinearLayout
+            android:id="@+id/layoutBudgetInsight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_rounded"
+            android:backgroundTint="?attr/colorSurfaceContainer"
+            android:orientation="horizontal"
+            android:padding="14dp">
+
+            <View
+                android:id="@+id/dotBudgetInsight"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/bg_circle" />
+
+            <TextView
+                android:id="@+id/tvBudgetInsight"
+                style="@style/SmartBudget.Body"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                tools:text="You are over your monthly budget by ₹3,790.00." />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutSavingsInsight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_rounded"
+            android:backgroundTint="?attr/colorSurfaceContainer"
+            android:orientation="horizontal"
+            android:padding="14dp">
+
+            <View
+                android:id="@+id/dotSavingsInsight"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/bg_circle" />
+
+            <TextView
+                android:id="@+id/tvSavingsInsight"
+                style="@style/SmartBudget.Body"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                tools:text="You are currently saving 37.4% of your income." />
+        </LinearLayout>
+
+        <!-- ================= 3. Monthly budget and pace ================= -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/SmartBudget.SectionTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Monthly budget" />
+
+            <TextView
+                style="@style/SmartBudget.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This month" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutBudgetDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvSpentThisMonth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    tools:text="₹13,790.00" />
+
+                <TextView
+                    android:id="@+id/tvMonthlyBudget"
+                    style="@style/SmartBudget.Label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:textSize="14sp"
+                    tools:text="of ₹10,000.00" />
+
+                <TextView
+                    android:id="@+id/tvBudgetUsed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="138%" />
+            </LinearLayout>
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progressBudgetUsed"
+                style="@style/SmartBudget.ProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:max="100"
+                tools:progress="100" />
+
+            <TextView
+                android:id="@+id/tvRemainingBudget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:textAllCaps="true"
-                android:letterSpacing="0.05"
-                android:gravity="center"
-                android:layout_marginBottom="16dp"/>
-
-            <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/pieChart"
-                android:layout_width="match_parent"
-                android:layout_height="250dp" />
-
+                tools:text="₹3,790.00 over budget" />
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
 
-    <TextView
-        android:id="@+id/tvCategoryBreakdownLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="32dp"
-        android:text="Category Breakdown"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:textAllCaps="true"
-        android:letterSpacing="0.05"
-        app:layout_constraintTop_toBottomOf="@id/cardChart"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <TextView
+            android:id="@+id/tvNoBudgetMessage"
+            style="@style/SmartBudget.Subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Set a monthly budget to see budget usage."
+            android:visibility="gone" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerAnalytics"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="24dp"
-        app:layout_constraintTop_toBottomOf="@id/tvCategoryBreakdownLabel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <!-- Spending pace -->
+        <LinearLayout
+            android:id="@+id/layoutSpendingPaceDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/SmartBudget.Label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Daily average" />
+
+                    <TextView
+                        android:id="@+id/tvAverageDailySpending"
+                        style="@style/SmartBudget.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textSize="16sp"
+                        tools:text="₹1,970.00" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/SmartBudget.Label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Projected for the month" />
+
+                    <TextView
+                        android:id="@+id/tvProjectedMonthlySpending"
+                        style="@style/SmartBudget.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textSize="16sp"
+                        tools:text="₹61,070.00" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvSpendingPaceStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="14sp"
+                tools:text="At your current spending rate, you may exceed your budget." />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvNoExpensesMessage"
+            style="@style/SmartBudget.Subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Add expenses to see your spending pace."
+            android:visibility="gone" />
+
+        <!-- ================= 4. Daily spending ================= -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/SmartBudget.SectionTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Daily spending" />
+
+            <TextView
+                style="@style/SmartBudget.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This month" />
+        </LinearLayout>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChartDaily"
+            android:layout_width="match_parent"
+            android:layout_height="190dp"
+            android:layout_marginTop="12dp" />
+
+        <TextView
+            android:id="@+id/tvNoDailyExpenses"
+            style="@style/SmartBudget.Subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:lineSpacingExtra="2dp"
+            android:text="No spending data yet.\nAdd an expense to see how your spending moves through the month."
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <!-- ================= 5. This month vs last month ================= -->
+        <TextView
+            style="@style/SmartBudget.SectionTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="This month vs last month" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardMonthComparison"
+            style="@style/SmartBudget.Panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:id="@+id/layoutMonthComparisonDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Expenses with two bars -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/SmartBudget.Body"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Expenses"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvExpenseChange"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            tools:text="↑ ₹8,790.00 (175.8%)" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/SmartBudget.Label"
+                            android:layout_width="78dp"
+                            android:layout_height="wrap_content"
+                            android:text="This month" />
+
+                        <com.google.android.material.progressindicator.LinearProgressIndicator
+                            android:id="@+id/progressExpenseThisMonth"
+                            style="@style/SmartBudget.ProgressBar.Thin"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:max="100"
+                            app:trackColor="@android:color/transparent"
+                            tools:progress="100" />
+
+                        <TextView
+                            android:id="@+id/tvExpenseThisMonth"
+                            android:layout_width="96dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            tools:text="₹13,790.00" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/SmartBudget.Label"
+                            android:layout_width="78dp"
+                            android:layout_height="wrap_content"
+                            android:text="Last month" />
+
+                        <com.google.android.material.progressindicator.LinearProgressIndicator
+                            android:id="@+id/progressExpenseLastMonth"
+                            style="@style/SmartBudget.ProgressBar.Thin"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:max="100"
+                            app:indicatorColor="?attr/colorOutline"
+                            app:trackColor="@android:color/transparent"
+                            tools:progress="36" />
+
+                        <TextView
+                            android:id="@+id/tvExpenseLastMonth"
+                            android:layout_width="96dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textSize="14sp"
+                            tools:text="₹5,000.00" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="18dp"
+                        android:background="?attr/colorOutlineVariant" />
+
+                    <!-- Income -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/SmartBudget.Body"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Income"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvIncomeComparison"
+                                style="@style/SmartBudget.Label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                tools:text="₹15,000.00 vs ₹15,000.00" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tvIncomeChange"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            tools:text="No change" />
+                    </LinearLayout>
+
+                    <!-- Savings -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/SmartBudget.Body"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Savings"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvSavingsComparison"
+                                style="@style/SmartBudget.Label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                tools:text="₹1,210.00 vs ₹10,000.00" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tvSavingsChange"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            tools:text="↓ ₹8,790.00" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvNoPreviousMonthData"
+                    style="@style/SmartBudget.Subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No previous month data available."
+                    android:visibility="gone" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ================= 6. Spending by category (all time) ================= -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/SmartBudget.SectionTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Spending by category" />
+
+            <TextView
+                style="@style/SmartBudget.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="All time" />
+        </LinearLayout>
+
+        <!-- Donut chart and the list below it form one visual -->
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChart"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginTop="8dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerAnalytics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:nestedScrollingEnabled="false" />
+
+        <TextView
+            android:id="@+id/tvNoCategoryData"
+            style="@style/SmartBudget.Subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:lineSpacingExtra="2dp"
+            android:text="No spending data yet.\nAdd an expense to see your spending breakdown."
+            android:visibility="gone" />
+
+        <!-- ================= 7. Category changes ================= -->
+        <TextView
+            style="@style/SmartBudget.SectionTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Category changes" />
+
+        <TextView
+            style="@style/SmartBudget.Subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Expenses this month compared with last month" />
+
+        <!-- One row per category is added here from AnalyticsActivity -->
+        <LinearLayout
+            android:id="@+id/layoutCategoryComparisonList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/tvNoCategoryComparison"
+            style="@style/SmartBudget.Subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            tools:text="No previous month data available." />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

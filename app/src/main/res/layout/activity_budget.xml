@@ -7,40 +7,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="?attr/colorSurfaceContainer">
+    android:background="?attr/colorSurface">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="24dp">
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="28dp">
 
-        <!-- Title -->
         <TextView
             android:id="@+id/tvBudgetScreenTitle"
-            android:layout_width="0dp"
+            style="@style/SmartBudget.ScreenTitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Monthly Budget"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="?attr/colorOnSurface"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:text="Budget" />
 
-        <!-- Overview Card -->
+        <TextView
+            style="@style/SmartBudget.Subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="How much can I still spend this month?" />
+
+        <!-- Budget status -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardBudgetOverview"
-            android:layout_width="0dp"
+            style="@style/SmartBudget.Panel"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="1dp"
-            app:strokeColor="?attr/colorOutlineVariant"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:layout_constraintTop_toBottomOf="@id/tvBudgetScreenTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:layout_marginTop="24dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -49,114 +46,122 @@
                 android:padding="20dp">
 
                 <TextView
+                    style="@style/SmartBudget.Label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Current Status"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textAllCaps="true"
-                    android:letterSpacing="0.05"
-                    android:layout_marginBottom="16dp"/>
+                    android:text="Monthly budget" />
 
                 <TextView
                     android:id="@+id/tvBudget"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="Budget: ₹5000.00"
-                    android:textColor="?attr/colorOnSurface"
-                    android:textSize="18sp"
-                    android:layout_marginBottom="12dp" />
-
-                <TextView
-                    android:id="@+id/tvSpent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="Spent: ₹2000.00"
-                    android:textColor="?attr/colorOnSurface"
-                    android:textSize="18sp"
-                    android:layout_marginBottom="12dp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?attr/colorOutlineVariant"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="16dp" />
-
-                <TextView
-                    android:id="@+id/tvRemaining"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="Remaining: ₹3000.00"
-                    android:textColor="?attr/colorPrimary"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Update Budget Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardUpdateBudget"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="1dp"
-            app:strokeColor="?attr/colorOutlineVariant"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:layout_constraintTop_toBottomOf="@id/cardBudgetOverview"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Update Budget"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:textSize="14sp"
+                    android:layout_marginTop="2dp"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="32sp"
                     android:textStyle="bold"
-                    android:textAllCaps="true"
-                    android:letterSpacing="0.05"
-                    android:layout_marginBottom="16dp"/>
+                    tools:text="₹10,000.00" />
 
-                <com.google.android.material.textfield.TextInputLayout
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progressBudget"
+                    style="@style/SmartBudget.ProgressBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    app:prefixText="₹ "
-                    app:hintEnabled="false">
+                    android:layout_marginTop="18dp"
+                    android:max="100"
+                    tools:progress="70" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etBudget"
-                        android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="Enter monthly budget"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
+                        <TextView
+                            style="@style/SmartBudget.Label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Spent" />
+
+                        <TextView
+                            android:id="@+id/tvSpent"
+                            style="@style/SmartBudget.Value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            tools:text="₹13,790.00" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvRemainingLabel"
+                            style="@style/SmartBudget.Label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Remaining" />
+
+                        <TextView
+                            android:id="@+id/tvRemaining"
+                            style="@style/SmartBudget.Value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            tools:text="₹3,790.00" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
+        <!-- Update budget -->
+        <TextView
+            style="@style/SmartBudget.SectionTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Update monthly budget" />
+
+        <TextView
+            style="@style/SmartBudget.Subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Your limit for all expenses in a month" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/SmartBudget.TextField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            app:prefixText="₹ "
+            app:expandedHintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etBudget"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter monthly budget"
+                android:inputType="numberDecimal" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btnSaveBudget"
-            style="@style/Widget.Material3.Button"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="32dp"
-            android:text="Save Budget"
-            android:textSize="16sp"
-            app:cornerRadius="12dp"
-            app:layout_constraintTop_toBottomOf="@id/cardUpdateBudget"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            style="@style/SmartBudget.PrimaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Save budget" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>

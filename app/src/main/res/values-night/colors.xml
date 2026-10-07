@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color_income">#81C784</color>
-    <color name="color_expense">#E57373</color>
+    <!-- Brand (indigo) -->
+    <color name="brand_primary">#BAC3FF</color>
+    <color name="brand_on_primary">#0E2082</color>
+    <color name="brand_primary_container">#2C3AAE</color>
+    <color name="brand_on_primary_container">#DFE1FF</color>
+    <color name="brand_secondary_container">#454659</color>
+    <color name="brand_on_secondary_container">#E2E1F6</color>
+
+    <!-- Semantic Colors -->
+    <color name="color_income">#74D5A0</color>
+    <color name="color_expense">#FF8E86</color>
+    <color name="income_container">#1C3A2A</color>
+    <color name="expense_container">#46201F</color>
+
+    <!-- Restrained chart palette -->
+    <color name="chart_1">#9AA6FF</color>
+    <color name="chart_2">#5CC3B5</color>
+    <color name="chart_3">#EBB76A</color>
+    <color name="chart_4">#E58C9B</color>
+    <color name="chart_5">#9AA5BF</color>
+    <color name="chart_6">#B6A6EC</color>
+    <color name="chart_7">#5E6575</color>
 </resources>

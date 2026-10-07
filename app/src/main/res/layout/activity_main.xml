@@ -7,264 +7,258 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="?attr/colorSurfaceContainer">
+    android:background="?attr/colorSurface">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="24dp">
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="28dp">
 
+        <!-- Header -->
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="0dp"
+            style="@style/SmartBudget.ScreenTitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Smart Budget &amp; Expense Tracker"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="?attr/colorOnSurface"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:text="Smart Budget" />
 
-        <!-- BALANCE CARD -->
+        <TextView
+            style="@style/SmartBudget.Subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Your money at a glance" />
+
+        <!-- Hero: balance with income and expenses -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardBalance"
-            android:layout_width="0dp"
+            style="@style/SmartBudget.Panel"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="1dp"
-            app:strokeColor="?attr/colorOutlineVariant"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="28dp"
+            app:cardBackgroundColor="?attr/colorPrimary">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="24dp"
-                android:gravity="center">
+                android:padding="24dp">
 
                 <TextView
                     android:id="@+id/tvBalanceLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Current Balance"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textAllCaps="true"
-                    android:letterSpacing="0.05" />
+                    android:alpha="0.8"
+                    android:text="Total balance"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvBalance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:text="₹0.00"
-                    android:textColor="?attr/colorPrimary"
-                    android:textSize="40sp"
-                    android:textStyle="bold" />
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textSize="38sp"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:autoSizeTextType="uniform"
+                    android:autoSizeMinTextSize="24sp"
+                    android:autoSizeMaxTextSize="38sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:alpha="0.2"
+                    android:background="?attr/colorOnPrimary" />
+
+                <LinearLayout
+                    android:id="@+id/llIncomeExpense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.8"
+                            android:text="↓  Income"
+                            android:textColor="?attr/colorOnPrimary"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/tvIncome"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="₹0.00"
+                            android:textColor="?attr/colorOnPrimary"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.8"
+                            android:text="↑  Expenses"
+                            android:textColor="?attr/colorOnPrimary"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/tvExpense"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="₹0.00"
+                            android:textColor="?attr/colorOnPrimary"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- INCOME / EXPENSE CARDS -->
+        <!-- Monthly budget -->
         <LinearLayout
-            android:id="@+id/llIncomeExpense"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal"
-            android:baselineAligned="false"
-            app:layout_constraintTop_toBottomOf="@id/cardBalance"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutlineVariant"
-                app:cardBackgroundColor="?attr/colorSurface">
-
-                <TextView
-                    android:id="@+id/tvIncome"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:gravity="center"
-                    android:text="Income\n₹0.00"
-                    android:textColor="@color/color_income"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutlineVariant"
-                app:cardBackgroundColor="?attr/colorSurface">
-
-                <TextView
-                    android:id="@+id/tvExpense"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:gravity="center"
-                    android:text="Expenses\n₹0.00"
-                    android:textColor="@color/color_expense"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
-
-        <!-- BUDGET SUMMARY CARD -->
-        <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardBudget"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="1dp"
-            app:strokeColor="?attr/colorOutlineVariant"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:layout_constraintTop_toBottomOf="@id/llIncomeExpense"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:layout_marginTop="32dp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
+                android:gravity="bottom"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    style="@style/SmartBudget.SectionTitle"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Monthly Overview"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textAllCaps="true"
-                    android:letterSpacing="0.05"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_weight="1"
+                    android:text="Monthly budget" />
 
                 <TextView
                     android:id="@+id/tvDashboardBudget"
-                    android:layout_width="match_parent"
+                    style="@style/SmartBudget.Label"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Monthly Budget: ₹0.00"
-                    android:textColor="?attr/colorOnSurface"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="8dp" />
+                    android:textSize="14sp"
+                    tools:text="₹10,000.00" />
+            </LinearLayout>
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progressDashboardBudget"
+                style="@style/SmartBudget.ProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:max="100"
+                tools:progress="70" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tvDashboardSpent"
-                    android:layout_width="match_parent"
+                    style="@style/SmartBudget.Body"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Spent This Month: ₹0.00"
-                    android:textColor="?attr/colorOnSurface"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="8dp" />
-
-                <!-- Separator -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?attr/colorOutlineVariant"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_weight="1"
+                    android:textSize="14sp"
+                    tools:text="₹13,790.00 spent" />
 
                 <TextView
                     android:id="@+id/tvDashboardRemaining"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Remaining: ₹0.00"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
                     android:textColor="?attr/colorPrimary"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    tools:text="₹3,790.00 over" />
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
 
-        <!-- QUICK ACTIONS SECTION -->
+        <!-- Actions -->
         <TextView
             android:id="@+id/tvQuickActionsLabel"
-            android:layout_width="wrap_content"
+            style="@style/SmartBudget.SectionTitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Quick Actions"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:textAllCaps="true"
-            android:letterSpacing="0.05"
-            app:layout_constraintTop_toBottomOf="@id/cardBudget"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:text="Quick actions" />
 
         <Button
             android:id="@+id/btnAddTransaction"
-            style="@style/Widget.Material3.Button"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="16dp"
-            android:text="Add Transaction"
-            android:textSize="16sp"
-            app:cornerRadius="12dp"
-            app:layout_constraintTop_toBottomOf="@id/tvQuickActionsLabel"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            style="@style/SmartBudget.PrimaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="Add transaction"
+            app:icon="@drawable/ic_add"
+            app:iconGravity="textStart" />
 
-        <Button
-            android:id="@+id/btnHistory"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="Transaction History"
-            android:textSize="16sp"
-            app:cornerRadius="12dp"
-            app:layout_constraintTop_toBottomOf="@id/btnAddTransaction"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btnBudget"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="12dp"
-            android:text="Budget Settings"
-            android:textSize="16sp"
-            app:cornerRadius="12dp"
-            app:layout_constraintTop_toBottomOf="@id/btnHistory"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            <Button
+                android:id="@+id/btnHistory"
+                style="@style/SmartBudget.NavTile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:text="History"
+                app:icon="@drawable/ic_history" />
 
-        <Button
-            android:id="@+id/btnAnalytics"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="12dp"
-            android:text="View Analytics"
-            android:textSize="16sp"
-            app:cornerRadius="12dp"
-            app:layout_constraintTop_toBottomOf="@id/btnBudget"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            <Button
+                android:id="@+id/btnBudget"
+                style="@style/SmartBudget.NavTile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="6dp"
+                android:text="Budget"
+                app:icon="@drawable/ic_wallet" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/btnAnalytics"
+                style="@style/SmartBudget.NavTile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                android:text="Analytics"
+                app:icon="@drawable/ic_analytics" />
+        </LinearLayout>
+
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>

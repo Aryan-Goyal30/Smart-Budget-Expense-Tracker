@@ -3,7 +3,26 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <!-- Brand (indigo) -->
+    <color name="brand_primary">#4553C7</color>
+    <color name="brand_on_primary">#FFFFFF</color>
+    <color name="brand_primary_container">#DFE1FF</color>
+    <color name="brand_on_primary_container">#000E5E</color>
+    <color name="brand_secondary_container">#E2E1F6</color>
+    <color name="brand_on_secondary_container">#1A1B2C</color>
+
     <!-- Semantic Colors -->
-    <color name="color_income">#2E7D32</color>
-    <color name="color_expense">#C62828</color>
+    <color name="color_income">#1E8A57</color>
+    <color name="color_expense">#C8413F</color>
+    <color name="income_container">#E2F3E9</color>
+    <color name="expense_container">#FBE6E5</color>
+
+    <!-- Restrained chart palette -->
+    <color name="chart_1">#4553C7</color>
+    <color name="chart_2">#2A9D8F</color>
+    <color name="chart_3">#E0A243</color>
+    <color name="chart_4">#D3687A</color>
+    <color name="chart_5">#7C89A6</color>
+    <color name="chart_6">#9B87D9</color>
+    <color name="chart_7">#B8BFCE</color>
 </resources>

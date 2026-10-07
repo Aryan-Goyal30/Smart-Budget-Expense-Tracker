@@ -6,6 +6,9 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.google.android.material.color.MaterialColors
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -99,6 +102,9 @@ class MainActivity : AppCompatActivity() {
         val dashboardRemainingText =
             findViewById<TextView>(R.id.tvDashboardRemaining)
 
+        val budgetProgress =
+            findViewById<LinearProgressIndicator>(R.id.progressDashboardBudget)
+
         lifecycleScope.launch(Dispatchers.IO) {
 
             val database =
@@ -150,32 +156,75 @@ class MainActivity : AppCompatActivity() {
             withContext(Dispatchers.Main) {
 
                 // Dashboard income/expense information
-                balanceText.text =
-                    "₹%.2f".format(balance)
+                if (balance < 0) {
+                    balanceText.text = "-₹%,.2f".format(-balance)
+                } else {
+                    balanceText.text = "₹%,.2f".format(balance)
+                }
 
                 incomeText.text =
-                    "Income\n₹%.2f".format(income)
+                    "₹%,.2f".format(income)
 
                 expenseText.text =
-                    "Expenses\n₹%.2f".format(expenses)
+                    "₹%,.2f".format(expenses)
 
                 // Dashboard budget information
-                dashboardBudgetText.text =
-                    "Monthly Budget: ₹%.2f".format(budget)
+                if (budget > 0) {
+                    dashboardBudgetText.text = "₹%,.2f".format(budget)
+                } else {
+                    dashboardBudgetText.text = "Not set"
+                }
 
                 dashboardSpentText.text =
-                    "Spent This Month: ₹%.2f".format(monthlySpent)
+                    "₹%,.2f spent this month".format(monthlySpent)
+
+                // Progress bar: how much of the budget is used (full bar when over)
+                var usedPercentage = 0
+
+                if (budget > 0) {
+                    usedPercentage = ((monthlySpent / budget) * 100).toInt()
+                }
+
+                if (usedPercentage > 100) {
+                    usedPercentage = 100
+                }
+
+                budgetProgress.progress = usedPercentage
 
                 // Show Remaining or Over Budget
-                if (remaining >= 0) {
+                if (budget <= 0) {
+
+                    dashboardRemainingText.text = "Set a budget"
+
+                    dashboardRemainingText.setTextColor(
+                        MaterialColors.getColor(dashboardRemainingText, com.google.android.material.R.attr.colorPrimary)
+                    )
+
+                } else if (remaining >= 0) {
 
                     dashboardRemainingText.text =
-                        "Remaining: ₹%.2f".format(remaining)
+                        "₹%,.2f left".format(remaining)
+
+                    dashboardRemainingText.setTextColor(
+                        ContextCompat.getColor(this@MainActivity, R.color.color_income)
+                    )
+
+                    budgetProgress.setIndicatorColor(
+                        MaterialColors.getColor(budgetProgress, com.google.android.material.R.attr.colorPrimary)
+                    )
 
                 } else {
 
                     dashboardRemainingText.text =
-                        "Over Budget: ₹%.2f".format(-remaining)
+                        "₹%,.2f over".format(-remaining)
+
+                    dashboardRemainingText.setTextColor(
+                        ContextCompat.getColor(this@MainActivity, R.color.color_expense)
+                    )
+
+                    budgetProgress.setIndicatorColor(
+                        ContextCompat.getColor(this@MainActivity, R.color.color_expense)
+                    )
                 }
             }
         }

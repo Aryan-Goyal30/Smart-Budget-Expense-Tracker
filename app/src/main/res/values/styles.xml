@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Empty base style: names like "SmartBudget.Label" inherit from it -->
+    <style name="SmartBudget" />
+
+    <!-- ===== Text styles used on every screen ===== -->
+
+    <!-- Screen title, e.g. "Analytics" -->
+    <style name="SmartBudget.ScreenTitle">
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- Small grey line under a screen or section title -->
+    <style name="SmartBudget.Subtitle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- Section heading, e.g. "Daily spending" -->
+    <style name="SmartBudget.SectionTitle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- Small label above a number, e.g. "Income" -->
+    <style name="SmartBudget.Label">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- A money value -->
+    <style name="SmartBudget.Value">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- Normal sentence text -->
+    <style name="SmartBudget.Body">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- ===== Panel: a soft tinted block used only where grouping helps ===== -->
+    <style name="SmartBudget.Panel">
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="cardBackgroundColor">?attr/colorSurfaceContainer</item>
+    </style>
+
+    <!-- ===== Text fields with the same rounded corners everywhere ===== -->
+    <style name="ShapeAppearance.SmartBudget.Field" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">14dp</item>
+    </style>
+
+    <style name="ShapeAppearance.SmartBudget.Pill" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="SmartBudget.TextField" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.SmartBudget.Field</item>
+        <item name="hintEnabled">false</item>
+    </style>
+
+    <style name="SmartBudget.TextField.Dropdown" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.SmartBudget.Field</item>
+        <item name="hintEnabled">false</item>
+    </style>
+
+    <!-- Filled pill used for search and sort on the History screen -->
+    <style name="SmartBudget.PillField" parent="Widget.Material3.TextInputLayout.OutlinedBox.Dense">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.SmartBudget.Pill</item>
+        <item name="hintEnabled">false</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+        <item name="boxBackgroundColor">?attr/colorSurfaceContainerHigh</item>
+    </style>
+
+    <style name="SmartBudget.PillField.Dropdown" parent="Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.SmartBudget.Pill</item>
+        <item name="hintEnabled">false</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+        <item name="boxBackgroundColor">?attr/colorSurfaceContainerHigh</item>
+    </style>
+
+    <!-- ===== Buttons ===== -->
+    <style name="SmartBudget.PrimaryButton" parent="Widget.Material3.Button">
+        <item name="android:minHeight">56dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="cornerRadius">16dp</item>
+    </style>
+
+    <!-- Dashboard navigation tile: icon above text -->
+    <style name="SmartBudget.NavTile" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:minHeight">80dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="cornerRadius">20dp</item>
+        <item name="iconGravity">top</item>
+        <item name="iconPadding">6dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="iconSize">24dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
+    <!-- Small text action, e.g. Edit / Delete on a transaction -->
+    <style name="SmartBudget.SmallAction" parent="Widget.Material3.Button.TextButton">
+        <item name="android:minHeight">32dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="iconSize">16dp</item>
+        <item name="iconPadding">4dp</item>
+    </style>
+
+    <!-- Rounded progress bar (budget usage, comparisons, category shares) -->
+    <style name="SmartBudget.ProgressBar" parent="Widget.Material3.LinearProgressIndicator">
+        <item name="trackThickness">10dp</item>
+        <item name="trackCornerRadius">5dp</item>
+        <item name="trackColor">?attr/colorSurfaceContainerHighest</item>
+    </style>
+
+    <style name="SmartBudget.ProgressBar.Thin">
+        <item name="trackThickness">6dp</item>
+        <item name="trackCornerRadius">3dp</item>
+    </style>
+</resources>

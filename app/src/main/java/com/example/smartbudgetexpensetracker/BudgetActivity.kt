@@ -7,6 +7,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.google.android.material.color.MaterialColors
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -25,6 +28,8 @@ class BudgetActivity : AppCompatActivity() {
         val budgetText = findViewById<TextView>(R.id.tvBudget)
         val spentText = findViewById<TextView>(R.id.tvSpent)
         val remainingText = findViewById<TextView>(R.id.tvRemaining)
+        val remainingLabel = findViewById<TextView>(R.id.tvRemainingLabel)
+        val budgetProgress = findViewById<LinearProgressIndicator>(R.id.progressBudget)
 
         val budgetInput = findViewById<EditText>(R.id.etBudget)
         val saveButton = findViewById<Button>(R.id.btnSaveBudget)
@@ -54,9 +59,51 @@ class BudgetActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
 
-                    budgetText.text = "Budget: ₹%.2f".format(budget)
-                    spentText.text = "Spent: ₹%.2f".format(spent)
-                    remainingText.text = "Remaining: ₹%.2f".format(remaining)
+                    spentText.text = "₹%,.2f".format(spent)
+
+                    if (budget <= 0) {
+
+                        budgetText.text = "Not set"
+                        remainingLabel.text = "Remaining"
+                        remainingText.text = "—"
+                        budgetProgress.progress = 0
+
+                    } else {
+
+                        budgetText.text = "₹%,.2f".format(budget)
+
+                        // Progress bar: how much of the budget is used (full bar when over)
+                        var usedPercentage = ((spent / budget) * 100).toInt()
+
+                        if (usedPercentage > 100) {
+                            usedPercentage = 100
+                        }
+
+                        budgetProgress.progress = usedPercentage
+
+                        if (remaining >= 0) {
+
+                            remainingLabel.text = "Remaining"
+                            remainingText.text = "₹%,.2f".format(remaining)
+                            remainingText.setTextColor(
+                                ContextCompat.getColor(this@BudgetActivity, R.color.color_income)
+                            )
+                            budgetProgress.setIndicatorColor(
+                                MaterialColors.getColor(budgetProgress, com.google.android.material.R.attr.colorPrimary)
+                            )
+
+                        } else {
+
+                            remainingLabel.text = "Over budget"
+                            remainingText.text = "₹%,.2f".format(-remaining)
+                            remainingText.setTextColor(
+                                ContextCompat.getColor(this@BudgetActivity, R.color.color_expense)
+                            )
+                            budgetProgress.setIndicatorColor(
+                                ContextCompat.getColor(this@BudgetActivity, R.color.color_expense)
+                            )
+                        }
+                    }
                 }
             }
         }
