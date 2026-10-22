@@ -2,6 +2,7 @@ package com.example.smartbudgetexpensetracker
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -17,6 +18,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
+
+    private var isAllTimeSelected = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,6 +108,24 @@ class MainActivity : AppCompatActivity() {
         val budgetProgress =
             findViewById<LinearProgressIndicator>(R.id.progressDashboardBudget)
 
+        val budgetInsightLayout =
+            findViewById<View>(R.id.layoutBudgetInsight)
+
+        val budgetInsightDot =
+            findViewById<View>(R.id.dotBudgetInsight)
+
+        val budgetInsightText =
+            findViewById<TextView>(R.id.tvBudgetInsight)
+
+        val savingsInsightLayout =
+            findViewById<View>(R.id.layoutSavingsInsight)
+
+        val savingsInsightDot =
+            findViewById<View>(R.id.dotSavingsInsight)
+
+        val savingsInsightText =
+            findViewById<TextView>(R.id.tvSavingsInsight)
+
         lifecycleScope.launch(Dispatchers.IO) {
 
             val database =
@@ -141,32 +162,99 @@ class MainActivity : AppCompatActivity() {
             val year =
                 calendar.get(java.util.Calendar.YEAR).toString()
 
-            // Get expenses for the current month
+            // Get income and expenses for the current month
+            val monthlyIncome =
+                database.transactionDao()
+                    .getMonthlyIncome(month, year)
+
             val monthlySpent =
                 database.transactionDao()
                     .getMonthlyExpenses(month, year)
 
-            // Calculate balance and budget status
-            val balance =
+            // Calculate balances
+            val totalBalance =
                 income - expenses
+                
+            val monthlyBalance = 
+                monthlyIncome - monthlySpent
 
             val remaining =
                 budget - monthlySpent
 
             withContext(Dispatchers.Main) {
 
-                // Dashboard income/expense information
-                if (balance < 0) {
-                    balanceText.text = "-₹%,.2f".format(-balance)
-                } else {
-                    balanceText.text = "₹%,.2f".format(balance)
+                val tvToggleMonthly = findViewById<TextView>(R.id.tvToggleMonthly)
+                val tvToggleAllTime = findViewById<TextView>(R.id.tvToggleAllTime)
+                val tvBalanceLabel = findViewById<TextView>(R.id.tvBalanceLabel)
+                val tvIncomeLabel = findViewById<TextView>(R.id.tvIncomeLabel)
+                val tvExpenseLabel = findViewById<TextView>(R.id.tvExpenseLabel)
+
+                fun updateSummaryCard() {
+                    val displayIncome = if (isAllTimeSelected) income else monthlyIncome
+                    val displayExpense = if (isAllTimeSelected) expenses else monthlySpent
+                    val displayBalance = if (isAllTimeSelected) totalBalance else monthlyBalance
+
+                    if (displayBalance < 0) {
+                        balanceText.text = "-₹%,.2f".format(-displayBalance)
+                    } else {
+                        balanceText.text = "₹%,.2f".format(displayBalance)
+                    }
+
+                    incomeText.text = "₹%,.2f".format(displayIncome)
+                    expenseText.text = "₹%,.2f".format(displayExpense)
+                    
+                    if (isAllTimeSelected) {
+                        tvBalanceLabel.text = "All-time balance"
+                        tvIncomeLabel.text = "↓  All-time income"
+                        tvExpenseLabel.text = "↑  All-time expenses"
+                    } else {
+                        tvBalanceLabel.text = "Monthly balance"
+                        tvIncomeLabel.text = "↓  Monthly income"
+                        tvExpenseLabel.text = "↑  Monthly expenses"
+                    }
+                    
+                    val savingsInsight = InsightHelper.getSavingsInsight(displayIncome, displayBalance, isAllTimeSelected)
+                    savingsInsightText.text = savingsInsight.message
+                    InsightHelper.setInsightTone(this@MainActivity, savingsInsightLayout, savingsInsightDot, savingsInsight.tone)
                 }
 
-                incomeText.text =
-                    "₹%,.2f".format(income)
+                fun updateToggleUI() {
+                    if (isAllTimeSelected) {
+                        tvToggleAllTime.background = ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_rounded)
+                        tvToggleAllTime.backgroundTintList = android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#4DFFFFFF"))
+                        tvToggleAllTime.alpha = 1.0f
+                        
+                        tvToggleMonthly.background = null
+                        tvToggleMonthly.alpha = 0.7f
+                    } else {
+                        tvToggleMonthly.background = ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_rounded)
+                        tvToggleMonthly.backgroundTintList = android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#4DFFFFFF"))
+                        tvToggleMonthly.alpha = 1.0f
+                        
+                        tvToggleAllTime.background = null
+                        tvToggleAllTime.alpha = 0.7f
+                    }
+                }
+                
+                // Initial setup
+                updateToggleUI()
+                updateSummaryCard()
 
-                expenseText.text =
-                    "₹%,.2f".format(expenses)
+                tvToggleMonthly.setOnClickListener {
+                    if (isAllTimeSelected) {
+                        isAllTimeSelected = false
+                        updateToggleUI()
+                        updateSummaryCard()
+                    }
+                }
+
+                tvToggleAllTime.setOnClickListener {
+                    if (!isAllTimeSelected) {
+                        isAllTimeSelected = true
+                        updateToggleUI()
+                        updateSummaryCard()
+                    }
+                }
 
                 // Dashboard budget information
                 if (budget > 0) {
@@ -226,6 +314,11 @@ class MainActivity : AppCompatActivity() {
                         ContextCompat.getColor(this@MainActivity, R.color.color_expense)
                     )
                 }
+
+                // Insights
+                val budgetInsight = InsightHelper.getBudgetInsight(budget, monthlySpent)
+                budgetInsightText.text = budgetInsight.message
+                InsightHelper.setInsightTone(this@MainActivity, budgetInsightLayout, budgetInsightDot, budgetInsight.tone)
             }
         }
     }

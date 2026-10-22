@@ -39,6 +39,19 @@ interface TransactionDao {
     ): Double
 
     @Query("""
+        SELECT COALESCE(SUM(amount), 0)
+        FROM transactions
+        WHERE type = 'Expense'
+        AND date LIKE '%/' || :month || '/' || :year
+        AND CAST(SUBSTR(date, 1, 2) AS INTEGER) <= :maxDay
+    """)
+    suspend fun getMonthlyExpensesUpToDay(
+        month: String,
+        year: String,
+        maxDay: Int
+    ): Double
+
+    @Query("""
         SELECT category, COALESCE(SUM(amount), 0) AS total
         FROM transactions
         WHERE type = 'Expense'
@@ -69,6 +82,19 @@ interface TransactionDao {
     suspend fun getMonthlyIncome(
         month: String,
         year: String
+    ): Double
+
+    @Query("""
+        SELECT COALESCE(SUM(amount), 0)
+        FROM transactions
+        WHERE type = 'Income'
+        AND date LIKE '%/' || :month || '/' || :year
+        AND CAST(SUBSTR(date, 1, 2) AS INTEGER) <= :maxDay
+    """)
+    suspend fun getMonthlyIncomeUpToDay(
+        month: String,
+        year: String,
+        maxDay: Int
     ): Double
 
     @Query("""

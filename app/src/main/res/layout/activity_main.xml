@@ -48,14 +48,55 @@
                 android:orientation="vertical"
                 android:padding="24dp">
 
-                <TextView
-                    android:id="@+id/tvBalanceLabel"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:alpha="0.8"
-                    android:text="Total balance"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:textSize="14sp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tvBalanceLabel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.8"
+                        android:text="Monthly balance"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_rounded"
+                        android:backgroundTint="#33FFFFFF"
+                        android:padding="2dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvToggleMonthly"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="4dp"
+                            android:text="Monthly"
+                            android:textSize="12sp"
+                            android:textColor="?attr/colorOnPrimary"
+                            android:background="@drawable/bg_rounded"
+                            android:backgroundTint="#4DFFFFFF" />
+
+                        <TextView
+                            android:id="@+id/tvToggleAllTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="4dp"
+                            android:text="All time"
+                            android:textSize="12sp"
+                            android:textColor="?attr/colorOnPrimary"
+                            android:alpha="0.7"
+                            android:background="@android:color/transparent" />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvBalance"
@@ -93,10 +134,11 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tvIncomeLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:alpha="0.8"
-                            android:text="↓  Income"
+                            android:text="↓  Monthly income"
                             android:textColor="?attr/colorOnPrimary"
                             android:textSize="13sp" />
 
@@ -118,10 +160,11 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tvExpenseLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:alpha="0.8"
-                            android:text="↑  Expenses"
+                            android:text="↑  Monthly expenses"
                             android:textColor="?attr/colorOnPrimary"
                             android:textSize="13sp" />
 
@@ -202,6 +245,69 @@
                     android:textColor="?attr/colorPrimary"
                     tools:text="₹3,790.00 over" />
             </LinearLayout>
+        </LinearLayout>
+
+        <!-- ================= 2. How am I doing? ================= -->
+        <TextView
+            style="@style/SmartBudget.SectionTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="How am I doing?" />
+
+        <!-- Each insight is a softly tinted row; the tint is set in code (good / warning / neutral) -->
+        <LinearLayout
+            android:id="@+id/layoutBudgetInsight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_rounded"
+            android:backgroundTint="?attr/colorSurfaceContainer"
+            android:orientation="horizontal"
+            android:padding="14dp">
+
+            <View
+                android:id="@+id/dotBudgetInsight"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/bg_circle" />
+
+            <TextView
+                android:id="@+id/tvBudgetInsight"
+                style="@style/SmartBudget.Body"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                tools:text="You are over your monthly budget by ₹3,790.00." />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutSavingsInsight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_rounded"
+            android:backgroundTint="?attr/colorSurfaceContainer"
+            android:orientation="horizontal"
+            android:padding="14dp">
+
+            <View
+                android:id="@+id/dotSavingsInsight"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/bg_circle" />
+
+            <TextView
+                android:id="@+id/tvSavingsInsight"
+                style="@style/SmartBudget.Body"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                tools:text="You are currently saving 37.4% of your income." />
         </LinearLayout>
 
         <!-- Actions -->

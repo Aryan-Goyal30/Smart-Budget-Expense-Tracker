@@ -104,33 +104,6 @@ class AnalyticsActivity : AppCompatActivity() {
         val spendingPaceStatusText =
             findViewById<TextView>(R.id.tvSpendingPaceStatus)
 
-        val summaryIncomeText =
-            findViewById<TextView>(R.id.tvSummaryIncome)
-
-        val summaryExpensesText =
-            findViewById<TextView>(R.id.tvSummaryExpenses)
-
-        val summarySavingsLabel =
-            findViewById<TextView>(R.id.tvSummarySavingsLabel)
-
-        val summarySavingsText =
-            findViewById<TextView>(R.id.tvSummarySavings)
-
-        val summarySavingsRateText =
-            findViewById<TextView>(R.id.tvSummarySavingsRate)
-
-        val savingsRateNote =
-            findViewById<TextView>(R.id.tvSavingsRateNote)
-
-        val budgetInsightText =
-            findViewById<TextView>(R.id.tvBudgetInsight)
-
-        val savingsInsightText =
-            findViewById<TextView>(R.id.tvSavingsInsight)
-
-        val monthComparisonDetailsLayout =
-            findViewById<LinearLayout>(R.id.layoutMonthComparisonDetails)
-
         val noPreviousMonthText =
             findViewById<TextView>(R.id.tvNoPreviousMonthData)
 
@@ -173,27 +146,24 @@ class AnalyticsActivity : AppCompatActivity() {
         val noDailyExpensesMessage =
             findViewById<TextView>(R.id.tvNoDailyExpenses)
 
-        val budgetInsightLayout =
-            findViewById<View>(R.id.layoutBudgetInsight)
-
-        val budgetInsightDot =
-            findViewById<View>(R.id.dotBudgetInsight)
-
-        val savingsInsightLayout =
-            findViewById<View>(R.id.layoutSavingsInsight)
-
-        val savingsInsightDot =
-            findViewById<View>(R.id.dotSavingsInsight)
-
         val budgetUsedBar =
             findViewById<LinearProgressIndicator>(R.id.progressBudgetUsed)
 
         val noCategoryDataMessage =
             findViewById<TextView>(R.id.tvNoCategoryData)
 
+        val monthComparisonDetailsLayout =
+            findViewById<LinearLayout>(R.id.layoutMonthComparisonDetails)
+            
+        val monthComparisonSubtitleText =
+            findViewById<TextView>(R.id.tvMonthComparisonSubtitle)
+            
+        val categoryComparisonSubtitleText =
+            findViewById<TextView>(R.id.tvCategoryComparisonSubtitle)
+
         // Subtitle under the title, e.g. "October 2026"
-        findViewById<TextView>(R.id.tvAnalyticsSubtitle).text =
-            SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(Date())
+        val currentDateFormatted = SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(Date())
+        findViewById<TextView>(R.id.tvAnalyticsSubtitle).text = currentDateFormatted
 
         recyclerView.layoutManager =
             LinearLayoutManager(this)
@@ -233,12 +203,6 @@ class AnalyticsActivity : AppCompatActivity() {
             val dailyExpenseTotals =
                 database.transactionDao().getDailyExpenses(month, year)
 
-            val totalIncome =
-                database.transactionDao().getTotalIncome()
-
-            val totalExpenses =
-                database.transactionDao().getTotalExpenses()
-
             // Previous calendar month. Calendar handles the year change,
             // so in January this gives December of the previous year.
             val previousCalendar = java.util.Calendar.getInstance()
@@ -251,15 +215,21 @@ class AnalyticsActivity : AppCompatActivity() {
 
             val previousYear =
                 previousCalendar.get(java.util.Calendar.YEAR).toString()
+                
+            val previousMonthMaxDays = previousCalendar.getActualMaximum(java.util.Calendar.DAY_OF_MONTH)
+            
+            // Limit comparison to the same number of days elapsed in the current month, 
+            // but bounded by the actual days in the previous month
+            val daysToCompare = if (currentDayOfMonth > previousMonthMaxDays) previousMonthMaxDays else currentDayOfMonth
 
             val monthlyIncome =
                 database.transactionDao().getMonthlyIncome(month, year)
 
             val previousMonthExpenses =
-                database.transactionDao().getMonthlyExpenses(previousMonth, previousYear)
+                database.transactionDao().getMonthlyExpensesUpToDay(previousMonth, previousYear, daysToCompare)
 
             val previousMonthIncome =
-                database.transactionDao().getMonthlyIncome(previousMonth, previousYear)
+                database.transactionDao().getMonthlyIncomeUpToDay(previousMonth, previousYear, daysToCompare)
 
             val currentCategoryTotals =
                 combineCategories(database.transactionDao().getMonthlyExpensesByCategory(month, year))
@@ -268,90 +238,6 @@ class AnalyticsActivity : AppCompatActivity() {
                 combineCategories(database.transactionDao().getMonthlyExpensesByCategory(previousMonth, previousYear))
 
             withContext(Dispatchers.Main) {
-
-                val savings = totalIncome - totalExpenses
-
-                // Only divide when there is income, so we never divide by zero
-                var savingsRate = 0.0
-
-                if (totalIncome > 0) {
-                    savingsRate = (savings / totalIncome) * 100
-                }
-
-                summaryIncomeText.text = "₹%,.2f".format(totalIncome)
-                summaryExpensesText.text = "₹%,.2f".format(totalExpenses)
-
-                if (savings < 0) {
-                    summarySavingsLabel.text = "Deficit"
-                    summarySavingsText.text = "₹%,.2f".format(-savings)
-                    summarySavingsText.setTextColor(
-                        ContextCompat.getColor(this@AnalyticsActivity, R.color.color_expense)
-                    )
-                } else {
-                    summarySavingsLabel.text = "Savings"
-                    summarySavingsText.text = "₹%,.2f".format(savings)
-                }
-
-                summarySavingsRateText.text = "%.1f%%".format(savingsRate)
-
-                if (totalIncome > 0) {
-                    savingsRateNote.visibility = View.GONE
-                } else {
-                    savingsRateNote.visibility = View.VISIBLE
-                }
-
-                // How Am I Doing? Simple if/else rules using values calculated above.
-                // Each insight is also given a tone: good (green), warning (red) or neutral.
-                // Insight 1: monthly budget
-                if (monthlyBudget <= 0) {
-
-                    budgetInsightText.text =
-                        "Set a monthly budget to track your spending against a limit."
-                    setInsightTone(budgetInsightLayout, budgetInsightDot, TONE_NEUTRAL)
-
-                } else if (monthlyExpenses > monthlyBudget) {
-
-                    budgetInsightText.text =
-                        "You are over your monthly budget by ₹%,.2f."
-                            .format(monthlyExpenses - monthlyBudget)
-                    setInsightTone(budgetInsightLayout, budgetInsightDot, TONE_WARNING)
-
-                } else {
-
-                    val usedPercentage = (monthlyExpenses / monthlyBudget) * 100
-
-                    if (usedPercentage >= 80) {
-                        budgetInsightText.text =
-                            "You have used %.1f%% of your monthly budget."
-                                .format(usedPercentage)
-                        setInsightTone(budgetInsightLayout, budgetInsightDot, TONE_WARNING)
-                    } else {
-                        budgetInsightText.text =
-                            "You have used %.1f%% of your monthly budget and are within your limit."
-                                .format(usedPercentage)
-                        setInsightTone(budgetInsightLayout, budgetInsightDot, TONE_GOOD)
-                    }
-                }
-
-                // Insight 2: savings
-                if (totalIncome <= 0) {
-                    savingsInsightText.text =
-                        "Add income to see how much you are saving."
-                    setInsightTone(savingsInsightLayout, savingsInsightDot, TONE_NEUTRAL)
-                } else if (savings > 0) {
-                    savingsInsightText.text =
-                        "You are currently saving %.1f%% of your income."
-                            .format(savingsRate)
-                    setInsightTone(savingsInsightLayout, savingsInsightDot, TONE_GOOD)
-                } else if (savings == 0.0) {
-                    savingsInsightText.text =
-                        "You are spending all of your income."
-                    setInsightTone(savingsInsightLayout, savingsInsightDot, TONE_NEUTRAL)
-                } else {
-                    savingsInsightText.text =
-                        "Your expenses are higher than your income."
-                    setInsightTone(savingsInsightLayout, savingsInsightDot, TONE_WARNING)
-                }
 
                 if (monthlyBudget <= 0) {
 
@@ -473,16 +359,19 @@ class AnalyticsActivity : AppCompatActivity() {
                         val day = dailyTotal.date.split("/")[0].toIntOrNull()
 
                         if (day != null && day >= 1 && day <= currentDayOfMonth) {
-                            spentOnDay[day] = dailyTotal.total
+                            spentOnDay[day] += dailyTotal.total
                         }
                     }
 
-                    // One chart point per day, from day 1 up to today
+                    // To prevent sharp spikes and confusing flat lines on days with no expenses,
+                    // we calculate a cumulative running total for the line chart.
                     val trendEntries = ArrayList<Entry>()
+                    var cumulativeTotal = 0.0
 
                     for (day in 1..currentDayOfMonth) {
+                        cumulativeTotal += spentOnDay[day]
                         trendEntries.add(
-                            Entry(day.toFloat(), spentOnDay[day].toFloat())
+                            Entry(day.toFloat(), cumulativeTotal.toFloat())
                         )
                     }
 
@@ -538,13 +427,12 @@ class AnalyticsActivity : AppCompatActivity() {
                     xAxis.textSize = 11f
                     xAxis.yOffset = 8f
 
-                    // Y-axis: amount spent from ₹0, a few faint dashed guide lines
+                    // Y-axis: amount spent from ₹0, with faint solid guide lines
                     val yAxis = dailyTrendChart.axisLeft
                     yAxis.axisMinimum = 0f
                     yAxis.setLabelCount(4, false)
                     yAxis.setDrawAxisLine(false)
                     yAxis.gridColor = gridColor
-                    yAxis.enableGridDashedLine(10f, 10f, 0f)
                     yAxis.textColor = labelColor
                     yAxis.textSize = 11f
                     yAxis.xOffset = 8f
@@ -563,6 +451,15 @@ class AnalyticsActivity : AppCompatActivity() {
                     previousMonthExpenses > 0 || previousMonthIncome > 0
 
                 // Month comparison
+                
+                // Update subtitles to explicitly show the exact date ranges being compared
+                val previousMonthName = SimpleDateFormat("MMM", Locale.getDefault()).format(previousCalendar.time)
+                val currentMonthName = SimpleDateFormat("MMM", Locale.getDefault()).format(calendar.time)
+                val dateRangeComparisonText = "$currentMonthName 1–$currentDayOfMonth vs $previousMonthName 1–$daysToCompare"
+                
+                monthComparisonSubtitleText.text = dateRangeComparisonText
+                categoryComparisonSubtitleText.text = dateRangeComparisonText
+                
                 if (!hasPreviousMonthData) {
 
                     monthComparisonDetailsLayout.visibility = View.GONE
@@ -785,10 +682,6 @@ class AnalyticsActivity : AppCompatActivity() {
     }
 
     companion object {
-        // Tones for the "How am I doing?" insights
-        const val TONE_NEUTRAL = 0
-        const val TONE_GOOD = 1
-        const val TONE_WARNING = 2
     }
 
     // Display only: old records may say "food" while newer ones say "Food".
@@ -880,31 +773,7 @@ class AnalyticsActivity : AppCompatActivity() {
     }
 
     // Tints an insight row and its dot: green (good), red (warning) or grey (neutral)
-    private fun setInsightTone(row: View, dot: View, tone: Int) {
 
-        if (tone == TONE_GOOD) {
-            row.backgroundTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.income_container)
-            )
-            dot.backgroundTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.color_income)
-            )
-        } else if (tone == TONE_WARNING) {
-            row.backgroundTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.expense_container)
-            )
-            dot.backgroundTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.color_expense)
-            )
-        } else {
-            row.backgroundTintList = ColorStateList.valueOf(
-                MaterialColors.getColor(row, com.google.android.material.R.attr.colorSurfaceContainer)
-            )
-            dot.backgroundTintList = ColorStateList.valueOf(
-                MaterialColors.getColor(dot, com.google.android.material.R.attr.colorOutline)
-            )
-        }
-    }
 
     // For example: "↑ ₹3,790.00 (37.9%)" or "↓ ₹2,790.00"
     private fun getChangeText(
